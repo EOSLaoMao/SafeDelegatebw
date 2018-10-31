@@ -17,7 +17,7 @@ public:
                     asset net_weight,
                     asset cpu_weight){
 
-      require_auth(N(_self));
+      require_auth(_self);
 
       INLINE_ACTION_SENDER(eosiosystem::system_contract, delegatebw)
       (N(eosio), {{_self, N(delegateperm)}}, {_self, to, net_weight, cpu_weight, false});
