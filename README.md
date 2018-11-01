@@ -74,4 +74,4 @@ permissions:
            creditorperm     1:    1 bankofstaked@eosio.code
 ```
 
-Now it's all set, Contact Bank of Staked to add it to creditor table to start leasing your EOS(which is only aval to BPs only for now)
+Now it's all set, contact Bank of Staked to add it to creditor table to start leasing your EOS(which is only aval to BPs for now)
