@@ -59,7 +59,7 @@ cleos -u https://api.eoslaomao.com set account permission CREDITOR creditorperm 
 
 ```
 cleos -u https://api.eoslaomao.com set action permission CREDITOR CREDITOR delegatebw creditorperm -p CREDITOR@active
-cleos -u https://api.eoslaomao.com set action permission eosio CREDITOR delegatebw creditorperm -p CREDITOR@active
+cleos -u https://api.eoslaomao.com set action permission CREDITOR eosio undelegatebw creditorperm -p CREDITOR@active
 ```
 
 Finally the permission structure of creditor account would like:
