@@ -3,7 +3,7 @@
 docker ps | grep safedelegatebw-eos-dev
 if [ $? -ne 0 ]; then
     echo "Run eos dev env "
-    docker run --name safedelegatebw-eos-dev -dit --rm -v  `(pwd)`:/safedelegatebw eoslaomao/eos-dev:1.2.3
+    docker run --name safedelegatebw-eos-dev -dit --rm -v  `(pwd)`:/safedelegatebw eoslaomao/eos-dev:1.2.3-patched
 fi
 
 docker exec safedelegatebw-eos-dev eosiocpp -g /safedelegatebw/safedelegatebw.abi /safedelegatebw/safedelegatebw.cpp
