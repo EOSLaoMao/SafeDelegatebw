@@ -21,6 +21,18 @@ The only cost we see here is an additional 60K RAM. We will have detailed guide 
 
 1. deploy:
 
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) First, check the hash of build wasm: 
+
+```
+cat safedelegatebw.wasm | shasum -a 256
+3da535cdb8e47384e3af6e9583f4ec7a82cc2f9f4a188c2c477130fe21b2cfc3  -
+
+cat safedelegatebw.wasm | md5
+0c780517f8e9154423606f9cf8c1f0f4
+```
+
+Deploy:
+
 ```
 cleos -u https://api.eoslaomao.com set contract CREDITOR safedelegatebw/
 ```
