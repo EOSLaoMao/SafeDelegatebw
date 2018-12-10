@@ -19,7 +19,7 @@ The only cost we see here is an additional 60K RAM. We will have detailed guide 
 
 ### First, deploy SafeDelegatebw contract to creditor account
 
-1. deploy:
+1. Verify wasm hash before deply:
 
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) First, check the hash of build wasm: 
 
@@ -40,7 +40,7 @@ cleos -u https://api.eoslaomao.com set contract CREDITOR safedelegatebw/
 2. grant system contract's `delegatebw` action permission to a new permission `delegateperm`, which will be used only for SafeDelegatebw:
 
 ```
-./delegate_perm.sh CREDITOR PUBKEY https://api.eoslaomao.com
+./delegate_perm.sh CREDITOR https://api.eoslaomao.com
 ```
 
 now the permission structure of creditor account would be like:
@@ -51,7 +51,7 @@ cleos -u https://api.eoslaomao.com get account CREDITOR
 permissions:
      owner     1:    1 OWNER_KEY
         active     1:    1 ACTIVE_KEY
-           delegateperm     1:    1 PUBKEY    1 CREDITOR@eosio.code
+           delegateperm     1:    1 CREDITOR@eosio.code
 ```
 
 ### Grant creditor delegate/undelegate permission to Bank of Staked
@@ -82,8 +82,8 @@ cleos -u https://api.eoslaomao.com get account CREDITOR
 permissions:
      owner     1:    1 OWNER_KEY
         active     1:    1 ACTIVE_KEY
-           delegateperm     1:    1 PUBKEY    1 CREDITOR@eosio.code
+           delegateperm     1:    1 CREDITOR@eosio.code
            creditorperm     1:    1 bankofstaked@eosio.code
 ```
 
-Now it's all set, contact Bank of Staked to add it to creditor table to start leasing your EOS(which is only aval to BPs for now)
+Now it's all set, contact Bank of Staked to add it to creditor table to start leasing your EOS(which is only aval to BPs for now)[https://t.me/BOSCreditor](https://t.me/BOSCreditor)

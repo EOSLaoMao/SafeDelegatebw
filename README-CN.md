@@ -21,7 +21,19 @@ SafeDelegatebw 合约用于部署在 creditor 账户，避免直接暴露系统�
 
 ### 第一步，部署 SafeDelegatebw 合约到 creditor 账户
 
-1. 部署合约：
+1. 验证 wasm 哈希并部署合约：
+
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) 请确保 wasm 的哈希准确无误：
+
+```
+cat safedelegatebw.wasm | shasum -a 256
+3da535cdb8e47384e3af6e9583f4ec7a82cc2f9f4a188c2c477130fe21b2cfc3  -
+
+cat safedelegatebw.wasm | md5
+0c780517f8e9154423606f9cf8c1f0f4
+```
+
+部署合约：
 
 ```
 cleos -u https://api.eoslaomao.com set contract CREDITOR safedelegatebw/
@@ -30,7 +42,7 @@ cleos -u https://api.eoslaomao.com set contract CREDITOR safedelegatebw/
 2. 增加 delegateperm 权限并将系统合约的 delegatebw 权限授权给 delegateperm：
 
 ```
-./delegate_perm.sh CREDITOR PUBKEY https://api.eoslaomao.com
+./delegate_perm.sh CREDITOR https://api.eoslaomao.com
 ```
 
 完成之后 creditor 账户的权限结构如下：
@@ -41,7 +53,7 @@ cleos -u https://api.eoslaomao.com get account CREDITOR
 permissions:
      owner     1:    1 OWNER_KEY
         active     1:    1 ACTIVE_KEY
-           delegateperm     1:    1 PUBKEY    1 CREDITOR@eosio.code
+           delegateperm     1:    1 CREDITOR@eosio.code
 ```
 
 ### 第二步，授权 creditor 账户的 delegatebw 权限给 BankofStaked
@@ -75,8 +87,8 @@ cleos -u https://api.eoslaomao.com get account CREDITOR
 permissions:
      owner     1:    1 OWNER_KEY
         active     1:    1 ACTIVE_KEY
-           delegateperm     1:    1 PUBKEY    1 CREDITOR@eosio.code
+           delegateperm     1:    1 CREDITOR@eosio.code
            creditorperm     1:    1 bankofstaked@eosio.code
 ```
 
-至此，基于 SafeDelegatebw 合约的 creditor 账户权限设置完毕。接下来联系 Bank of Staked 官方人员将该账户加入到 creditor 表，即可开始自动出租 CPU/NET 资源。
+至此，基于 SafeDelegatebw 合约的 creditor 账户权限设置完毕。接下来联系 Bank of Staked 官方人员将该账户加入到 creditor 表，即可开始自动出租 CPU/NET 资源。[https://t.me/BOSCreditor](https://t.me/BOSCreditor)
