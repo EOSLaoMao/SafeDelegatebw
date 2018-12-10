@@ -76,7 +76,7 @@ cleos -u https://api.eoslaomao.com set action permission CREDITOR CREDITOR deleg
 2. 授权系统合约的 undelegatebw 合约权限给 creditorperm
 
 ```
-cleos -u https://api.eoslaomao.com set action permission eosio CREDITOR delegatebw creditorperm -p CREDITOR@active
+cleos -u https://api.eoslaomao.com set action permission CREDITOR eosio undelegatebw creditorperm -p CREDITOR@active
 ```
 
 最终 CREDITOR 账户的权限结构如下所示：
