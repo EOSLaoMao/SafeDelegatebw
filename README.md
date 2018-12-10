@@ -56,23 +56,19 @@ permissions:
 
 ### Grant creditor delegate/undelegate permission to Bank of Staked
 
+There is a script called `creditor_perm.sh` to facilicate this process, which do the following 2 things.
+
 1. Create `creditorperm` permission and grant it to `bankofstaked@eosio`
-
-```
-cleos -u https://api.eoslaomao.com set account permission CREDITOR creditorperm '{"threshold": 1,"keys": [],"accounts": [{"permission":{"actor":"bankofstaked","permission":"eosio.code"},"weight":1}]}'  "active" -p CREDITOR@active
-```
-
 2. Grant these two actions permission to `creditorperm`:
 
     `delegatebw action from CREDITOR(SafeDelegatebw)`
 
     `undelegatebw action from eosio (System Contract)`
 
+```
+./creditor_perm.sh CREDITOR https://api.eoslaomao.com
+```
 
-```
-cleos -u https://api.eoslaomao.com set action permission CREDITOR CREDITOR delegatebw creditorperm -p CREDITOR@active
-cleos -u https://api.eoslaomao.com set action permission CREDITOR eosio undelegatebw creditorperm -p CREDITOR@active
-```
 
 Finally the permission structure of creditor account would like:
 

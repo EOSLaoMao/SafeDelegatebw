@@ -58,28 +58,19 @@ permissions:
 
 ### 第二步，授权 creditor 账户的 delegatebw 权限给 BankofStaked
 
-增加 creditorperm 权限，并将 creditor 账户部署的 SafeDelegatebw 的 delegatebw 权限，以及系统合约的 undelegatebw 权限授权给 Bank of Staked
-
-1. 新增 creditorperm 权限，授权给 bankofstaked 账户的 eosio.code：
+增加 creditorperm 权限，并将 creditor 账户部署的 SafeDelegatebw 的 delegatebw 权限，以及系统合约的 undelegatebw 权限授权给 Bank of Staked:
 
 ```
-cleos -u https://api.eoslaomao.com set account permission CREDITOR creditorperm '{"threshold": 1,"keys": [],"accounts": [{"permission":{"actor":"bankofstaked","permission":"eosio.code"},"weight":1}]}'  "active" -p CREDITOR@active
+./creditor_perm.sh CREDITOR https://api.eoslaomao.com
 ```
 
-2. 授权 SafeDelegatebw 的 delegatebw 合约权限给 creditorperm
+该步骤执行了下面三个权限设置操作。
 
-```
-cleos -u https://api.eoslaomao.com set action permission CREDITOR CREDITOR delegatebw creditorperm -p CREDITOR@active
-```
+  1. 新增 creditorperm 权限，授权给 bankofstaked 账户的 eosio.code。
+  1. 授权 SafeDelegatebw 的 delegatebw 合约权限给 creditorperm
+  1. 授权系统合约的 undelegatebw 合约权限给 creditorperm
 
-
-2. 授权系统合约的 undelegatebw 合约权限给 creditorperm
-
-```
-cleos -u https://api.eoslaomao.com set action permission CREDITOR eosio undelegatebw creditorperm -p CREDITOR@active
-```
-
-最终 CREDITOR 账户的权限结构如下所示：
+至此，CREDITOR 账户的权限结构如下所示：
 
 ```
 cleos -u https://api.eoslaomao.com get account CREDITOR
