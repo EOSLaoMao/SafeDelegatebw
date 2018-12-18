@@ -7,7 +7,7 @@ In order to lower the risk of creditor account granting delegatebw permission to
 
 As we know it, there is a 5th parameter in system contract's `delegatebw` action called `transfer`, which can be specified as `true` meaning transfer the ownership of the EOS you staked to the beneficiary account, which is pretty risky. Bank of Staked set `transfer` to `false` while it calls creditors `delegatebw` action, but still, there is a single point failure risk here. Thats why we built SafeDelegatebw.
 
-## Design of SafeDelegatebw 
+## Design of SafeDelegatebw
 
 SafeDelegatebw wraps up a new customized interface also named `delegatebw` with only 3 parameters(without `from` and `transfer` as in system contract) and hardcodes `transfer` to `false` while it calls system contract. creditor account deployed `SafeDelegatebw` can just grant this customized `delegatebw` action to Bank of Staked instead of the one from system contract.
 
@@ -19,39 +19,44 @@ The only cost we see here is an additional 60K RAM. We will have detailed guide 
 
 ### First, deploy SafeDelegatebw contract to creditor account
 
+0. clone SafeDelegatebw repo
+```shell
+git clone https://github.com/EOSLaoMao/SafeDelegatebw
+```
+
 1. Verify wasm hash before deply:
 
-![#f03c15](https://placehold.it/15/f03c15/000000?text=+) First, check the hash of build wasm: 
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) First, check the hash of build wasm:
 
 ```
-cat safedelegatebw.wasm | shasum -a 256
+cat SafeDelegatebw/safedelegatebw.wasm | shasum -a 256
 3da535cdb8e47384e3af6e9583f4ec7a82cc2f9f4a188c2c477130fe21b2cfc3  -
 
-cat safedelegatebw.wasm | md5
+cat SafeDelegatebw/safedelegatebw.wasm | md5
 0c780517f8e9154423606f9cf8c1f0f4
 ```
 
 Deploy:
 
 ```
-cleos -u https://api.eoslaomao.com set contract CREDITOR safedelegatebw/
+cleos -u https://api.eoslaomao.com set contract <your_creditor_account> safedelegatebw/
 ```
 
 2. grant system contract's `delegatebw` action permission to a new permission `delegateperm`, which will be used only for SafeDelegatebw:
 
 ```
-./delegate_perm.sh CREDITOR https://api.eoslaomao.com
+./delegate_perm.sh <your_creditor_account> https://api.eoslaomao.com
 ```
 
 now the permission structure of creditor account would be like:
 
 ```
-cleos -u https://api.eoslaomao.com get account CREDITOR
+cleos -u https://api.eoslaomao.com get account <your_creditor_account>
 
 permissions:
      owner     1:    1 OWNER_KEY
         active     1:    1 ACTIVE_KEY
-           delegateperm     1:    1 CREDITOR@eosio.code
+           delegateperm     1:    1 <your_creditor_account>@eosio.code
 ```
 
 ### Grant creditor delegate/undelegate permission to Bank of Staked
@@ -61,24 +66,24 @@ There is a script called `creditor_perm.sh` to facilicate this process, which do
 1. Create `creditorperm` permission and grant it to `bankofstaked@eosio`
 2. Grant these two actions permission to `creditorperm`:
 
-    `delegatebw action from CREDITOR(SafeDelegatebw)`
+    `delegatebw action from <your_creditor_account>(SafeDelegatebw)`
 
     `undelegatebw action from eosio (System Contract)`
 
 ```
-./creditor_perm.sh CREDITOR https://api.eoslaomao.com
+./creditor_perm.sh <your_creditor_account> https://api.eoslaomao.com
 ```
 
 
 Finally the permission structure of creditor account would like:
 
 ```
-cleos -u https://api.eoslaomao.com get account CREDITOR
+cleos -u https://api.eoslaomao.com get account <your_creditor_account>
 
 permissions:
      owner     1:    1 OWNER_KEY
         active     1:    1 ACTIVE_KEY
-           delegateperm     1:    1 CREDITOR@eosio.code
+           delegateperm     1:    1 <your_creditor_account>@eosio.code
            creditorperm     1:    1 bankofstaked@eosio.code
 ```
 
