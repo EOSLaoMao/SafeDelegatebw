@@ -29,7 +29,7 @@ git clone https://github.com/EOSLaoMao/SafeDelegatebw
 
 1. 验证 wasm 哈希并部署合约：
 
-![#f03c15](https://placehold.it/15/f03c15/000000?text=+) 请确保 wasm 的哈希准确无误：
+❗️❗️ 请确保 wasm 的哈希准确无误：
 
 ```
 cat SafeDelegatebw/safedelegatebw.wasm | shasum -a 256
@@ -48,6 +48,7 @@ cleos -u https://api.eoslaomao.com set contract <your_creditor_account> SafeDele
 2. 增加 delegateperm 权限并将系统合约的 delegatebw 权限授权给 delegateperm：
 
 ```
+cd SafeDelegatebw
 ./delegate_perm.sh <your_creditor_account> https://api.eoslaomao.com
 ```
 

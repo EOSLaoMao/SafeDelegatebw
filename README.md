@@ -26,7 +26,7 @@ git clone https://github.com/EOSLaoMao/SafeDelegatebw
 
 1. Verify wasm hash before deply:
 
-![#f03c15](https://placehold.it/15/f03c15/000000?text=+) First, check the hash of build wasm:
+❗️❗️ First, check the hash of build wasm:
 
 ```
 cat SafeDelegatebw/safedelegatebw.wasm | shasum -a 256
@@ -39,12 +39,13 @@ cat SafeDelegatebw/safedelegatebw.wasm | md5
 Deploy:
 
 ```
-cleos -u https://api.eoslaomao.com set contract <your_creditor_account> safedelegatebw/
+cleos -u https://api.eoslaomao.com set contract <your_creditor_account> SafeDelegatebw/
 ```
 
 2. grant system contract's `delegatebw` action permission to a new permission `delegateperm`, which will be used only for SafeDelegatebw:
 
 ```
+cd SafeDelegatebw
 ./delegate_perm.sh <your_creditor_account> https://api.eoslaomao.com
 ```
 
