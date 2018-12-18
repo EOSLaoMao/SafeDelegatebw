@@ -12,7 +12,7 @@ SafeDelegatebw 合约用于部署在 creditor 账户，避免直接暴露系统�
 
 将系统合约的 delegatebw 封装了一下，第 5 个参数 transfer 写死成 false。creditor 改为授权账户本身合约的 delegatebw 接口权限给 Bank of Staked，而不是直接授权系统合约的 delegatebw 接口。
 
-合约代码：https://github.com/EOSLaoMao/safedelegatebw
+合约代码：https://github.com/EOSLaoMao/SafeDelegatebw
 
 优点：大大降低 Bank of Staked 合约的单点风险。
 唯一的缺点：部署成本，需要大约 60K 的 RAM。
@@ -21,39 +21,45 @@ SafeDelegatebw 合约用于部署在 creditor 账户，避免直接暴露系统�
 
 ### 第一步，部署 SafeDelegatebw 合约到 creditor 账户
 
+0. 克隆 SafeDelegatebw 代码
+
+```shell
+git clone https://github.com/EOSLaoMao/SafeDelegatebw
+```
+
 1. 验证 wasm 哈希并部署合约：
 
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) 请确保 wasm 的哈希准确无误：
 
 ```
-cat safedelegatebw.wasm | shasum -a 256
+cat SafeDelegatebw/safedelegatebw.wasm | shasum -a 256
 3da535cdb8e47384e3af6e9583f4ec7a82cc2f9f4a188c2c477130fe21b2cfc3  -
 
-cat safedelegatebw.wasm | md5
+cat SafeDelegatebw/safedelegatebw.wasm | md5
 0c780517f8e9154423606f9cf8c1f0f4
 ```
 
 部署合约：
 
 ```
-cleos -u https://api.eoslaomao.com set contract CREDITOR safedelegatebw/
+cleos -u https://api.eoslaomao.com set contract <your_creditor_account> SafeDelegatebw/
 ```
 
 2. 增加 delegateperm 权限并将系统合约的 delegatebw 权限授权给 delegateperm：
 
 ```
-./delegate_perm.sh CREDITOR https://api.eoslaomao.com
+./delegate_perm.sh <your_creditor_account> https://api.eoslaomao.com
 ```
 
 完成之后 creditor 账户的权限结构如下：
 
 ```
-cleos -u https://api.eoslaomao.com get account CREDITOR
+cleos -u https://api.eoslaomao.com get account <your_creditor_account>
 
 permissions:
      owner     1:    1 OWNER_KEY
         active     1:    1 ACTIVE_KEY
-           delegateperm     1:    1 CREDITOR@eosio.code
+           delegateperm     1:    1 <your_creditor_account>@eosio.code
 ```
 
 ### 第二步，授权 creditor 账户的 delegatebw 权限给 BankofStaked
@@ -61,7 +67,7 @@ permissions:
 增加 creditorperm 权限，并将 creditor 账户部署的 SafeDelegatebw 的 delegatebw 权限，以及系统合约的 undelegatebw 权限授权给 Bank of Staked:
 
 ```
-./creditor_perm.sh CREDITOR https://api.eoslaomao.com
+./creditor_perm.sh <your_creditor_account> https://api.eoslaomao.com
 ```
 
 该步骤执行了下面三个权限设置操作。
@@ -70,15 +76,15 @@ permissions:
   1. 授权 SafeDelegatebw 的 delegatebw 合约权限给 creditorperm
   1. 授权系统合约的 undelegatebw 合约权限给 creditorperm
 
-至此，CREDITOR 账户的权限结构如下所示：
+至此，creditor 账户的权限结构如下所示：
 
 ```
-cleos -u https://api.eoslaomao.com get account CREDITOR
+cleos -u https://api.eoslaomao.com get account <your_creditor_account>
 
 permissions:
      owner     1:    1 OWNER_KEY
         active     1:    1 ACTIVE_KEY
-           delegateperm     1:    1 CREDITOR@eosio.code
+           delegateperm     1:    1 <your_creditor_account>@eosio.code
            creditorperm     1:    1 bankofstaked@eosio.code
 ```
 
